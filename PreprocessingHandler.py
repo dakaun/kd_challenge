@@ -1,0 +1,1 @@
+# The PreprocessingHandler contains methods for cleaning and preprocessing the data prior to analyzing it.
