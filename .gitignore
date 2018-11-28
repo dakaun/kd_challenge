@@ -6,4 +6,6 @@
 ./data
 .idea
 .pycharm
+
+./__pycache__
 >>>>>>> Adapted gitignore file
