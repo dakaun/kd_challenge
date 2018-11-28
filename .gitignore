@@ -1,2 +1,9 @@
+<<<<<<< HEAD
 # datai
 ./data
+=======
+# data
+./data
+.idea
+.pycharm
+>>>>>>> Adapted gitignore file
