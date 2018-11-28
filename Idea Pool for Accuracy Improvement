@@ -1,0 +1,10 @@
+- text usage (Bag of Words analysis for <Overview>)
+  - Filter useful/meaningful Words
+  - Dim. Reduction (PCA)
+- Preprocessing of Columns with dictionaries e.g. <genres>
+- Use other classifiers
+  - ANN
+  - CNN
+  - ...
+- Regularization mehtods
+- tbc.
