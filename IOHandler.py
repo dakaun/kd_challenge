@@ -7,8 +7,8 @@ import pickle
 import numpy as np
 import pandas as pd
 
-import DataCleansingHandler as dc
+def read_data():
+    df = pd.read_csv('./data/train.csv')
+    return df
 
-def some_method():
-    # do something
 
