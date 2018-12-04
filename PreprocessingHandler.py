@@ -1,3 +1,5 @@
+import IOHandler
+from ast import literal_eval
 # The PreprocessingHandler contains methods for cleaning and preprocessing the data prior to analyzing it.
 
 from sklearn.preprocessing import StandardScaler
@@ -28,17 +30,24 @@ def standard(X):
 # https://chrisalbon.com/machine_learning/vectors_matrices_and_arrays/converting_a_dictionary_into_a_matrix/
 # https://stackoverflow.com/questions/11277432/how-to-remove-a-key-from-a-python-dictionary
 def transform_dictionary(df):
-    genre_df = df['genre']
-    for element in genre_df:
-        for key, value in element:
-            if key == "name":
-                element.pop(key, None)
+    genre_df = df['genres']
+    for row in genre_df:
+        row = literal_eval(row)
+        for dic__pair in row:
+            for dic_element in dic__pair:
+                for key in dic_element:
+                    if key == "name":
+                        dic__pair.pop(key, None)
+    print(row)
 
     # Create DictVectorizer object
-    dictvectorizer = DictVectorizer(sparse=False)
+    #dictvectorizer = DictVectorizer(sparse=False)
 
     # Convert dictionary into feature matrix
-    features = dictvectorizer.fit_transform(genre_df)
+    # features = dictvectorizer.fit_transform(genre_df)
 
     # View feature matrix
     #features
+
+data = IOHandler.read_data()
+transform_dictionary(data)
