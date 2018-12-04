@@ -1,6 +1,7 @@
 # The PreprocessingHandler contains methods for cleaning and preprocessing the data prior to analyzing it.
 
 from sklearn.preprocessing import StandardScaler
+import numpy as np
 
 
 # give list of columns to drop
@@ -22,3 +23,22 @@ def standard(X):
     scaler = StandardScaler()
     X_trans = scaler.fit_transform(X)
     return X_trans
+
+# transform genre dictionary into columnwise entries
+# https://chrisalbon.com/machine_learning/vectors_matrices_and_arrays/converting_a_dictionary_into_a_matrix/
+# https://stackoverflow.com/questions/11277432/how-to-remove-a-key-from-a-python-dictionary
+def transform_dictionary(df):
+    genre_df = df['genre']
+    for element in genre_df:
+        for key, value in element:
+            if key == "name":
+                element.pop(key, None)
+
+    # Create DictVectorizer object
+    dictvectorizer = DictVectorizer(sparse=False)
+
+    # Convert dictionary into feature matrix
+    features = dictvectorizer.fit_transform(genre_df)
+
+    # View feature matrix
+    #features
