@@ -7,6 +7,12 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 
+# extract numerical columns
+def extract_numerical(dataset):
+    subset = dataset[['label', 'budget', 'popularity', 'revenue', 'runtime']]
+    return subset
+
+
 # give list of columns to drop
 def drop_columns(dataset, column_list):
     for column in column_list:

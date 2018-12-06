@@ -5,14 +5,10 @@ from sklearn.tree import DecisionTreeClassifier
 import pandas as pd
 
 
-# extract numerical columns
-def extract_numerical(dataset):
-    subset = dataset[['label', 'budget', 'popularity', 'revenue', 'runtime']]
-    return subset
 
 
 data = IOHandler.read_data()
-data = extract_numerical(data)
+data = PreprocessingHandler.extract_numerical(data)
 # data = drop_columns(data, ['imdbId', 'tmdbId'])
 X, y = PreprocessingHandler.get_X_y(data)
 X_stand = PreprocessingHandler.standard(X)
