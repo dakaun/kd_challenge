@@ -8,6 +8,6 @@ import numpy as np
 import pandas as pd
 
 
-def read_data():
-    df = pd.read_csv('./data/train.csv')
+def read_data(data_name):
+    df = pd.read_csv('./data/' + data_name + '.csv')
     return df

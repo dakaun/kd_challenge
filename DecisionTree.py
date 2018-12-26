@@ -5,13 +5,10 @@ from sklearn.tree import DecisionTreeClassifier
 import pandas as pd
 
 
-
-
-data = IOHandler.read_data()
-data = PreprocessingHandler.extract_numerical(data)
-# data = drop_columns(data, ['imdbId', 'tmdbId'])
+data = IOHandler.read_data('num_genre')
+#data = pd.read_csv('./data/num_genre.csv')
 X, y = PreprocessingHandler.get_X_y(data)
-X_stand = PreprocessingHandler.standard(X)
+#X_stand = PreprocessingHandler.standard(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 decisiontree = DecisionTreeClassifier()
