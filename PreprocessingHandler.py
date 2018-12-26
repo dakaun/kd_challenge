@@ -1,6 +1,7 @@
 # The PreprocessingHandler contains methods for cleaning and preprocessing the data prior to analyzing it.
 import ast
-
+import json
+import pandas as pd
 import IOHandler
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import StandardScaler
@@ -36,35 +37,25 @@ def standard(X):
 # transform genre dictionary into columnwise entries
 # https://chrisalbon.com/machine_learning/vectors_matrices_and_arrays/converting_a_dictionary_into_a_matrix/
 # https://stackoverflow.com/questions/11277432/how-to-remove-a-key-from-a-python-dictionary
-def transform_dictionary(df):
-    genre_df = df['genres']
-    print(genre_df.iloc[0])
 
-    dictvectorizer = DictVectorizer(sparse=False)
+def transform_dictionary(df_column, df_name):
+    '''
+    :param df: excepts column with dictionary entries like 'genres'
+    :return: one hot encoding matrix with the name entries as column and rows stay the same
+    '''
+    row_index = 0
+    result_df = pd.DataFrame()
 
-    # Convert dictionary into feature matrix
-    features = dictvectorizer.fit_transform(ast.literal_eval(genre_df.iloc[0]))
+    for row in df_column:
+        row_json = json.loads(row)
+        for element in row_json:
+            result_df.loc[row_index, element['name']] = 1
+        row_index += 1
+    result_df.to_csv('./data/' + df_name + '.csv')
+    return result_df
 
-    # View feature matrix
-    print(features)
 
-#    for row in genre_df:
-#        row = literal_eval(row)
-#        for dic__pair in row:
-#            for dic_element in dic__pair:
-#                for key in dic_element:
-#                    if key == "name":
-#                        dic__pair.pop(key, None)
-    #print(row)
 
-    # Create DictVectorizer object
-    #dictvectorizer = DictVectorizer(sparse=False)
-
-    # Convert dictionary into feature matrix
-    # features = dictvectorizer.fit_transform(genre_df)
-
-    # View feature matrix
-    #features
-
-data = IOHandler.read_data()
-transform_dictionary(data)
+df = IOHandler.read_data()
+genre_df = df['genre']
+transform_dictionary(genre_df, 'genre')
