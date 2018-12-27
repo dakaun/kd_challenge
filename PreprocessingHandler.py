@@ -16,6 +16,11 @@ def extract_numerical(dataset):
 
 # give list of columns to drop
 def drop_columns(dataset, column_list):
+    '''
+    :param dataset:
+    :param column_list: list of column which needs to be deleted
+    :return:
+    '''
     for column in column_list:
         dataset = dataset.drop(column, axis=1)
     return dataset
@@ -23,6 +28,11 @@ def drop_columns(dataset, column_list):
 
 # split dataset into data and target
 def get_X_y(dataset):
+    '''
+    splits dataset into target (which is the label category) and dataset (which is every column except the label column)
+    :param dataset:
+    :return:
+    '''
     target = dataset['label']
     X = dataset.loc[:, dataset.columns != 'label']
     return X, target
@@ -58,11 +68,20 @@ def transform_dictionary(df_column, df_name):
 
 
 def write_df(df, name):
+    '''
+    :param df: df which needs to be written to a file
+    :param name: name for the file
+    :return: csv file of the df with the given name in the data folder
+    '''
     df.to_csv('./data/' + name + '.csv', index=False)
 
-# todo adapt to more than two df
-def combine_df(df1, df2):
-    combined_df = pd.concat([df1, df2], axis=1)
+
+def combine_df(dataframe_list):
+    '''
+    :param dataframe_list: get dataframes in a list like [df1, df2]
+    :return: one dataframe which combines all given df
+    '''
+    combined_df = pd.concat(dataframe_list, axis=1)
     return combined_df
 
 data = IOHandler.read_data('train')
