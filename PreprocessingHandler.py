@@ -6,6 +6,9 @@ import IOHandler as io
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+import EvaluationHandler as ev
 
 
 # extract numerical columns
@@ -48,7 +51,6 @@ def standard(X):
 # transform genre dictionary into columnwise entries
 # https://chrisalbon.com/machine_learning/vectors_matrices_and_arrays/converting_a_dictionary_into_a_matrix/
 # https://stackoverflow.com/questions/11277432/how-to-remove-a-key-from-a-python-dictionary
-
 def transform_dictionary(df_column):
     '''
     :param df: excepts column with dictionary entries like 'genres'
@@ -62,7 +64,7 @@ def transform_dictionary(df_column):
         for element in row_json:
             result_df.loc[row_index, element['name']] = 1
         row_index += 1
-    result_df.fillna(0)
+    result_df.fillna(value=0, inplace=True)
     # result_df.to_csv('./data/' + df_name + '.csv', index=False) - done seperately through IO Method
     return result_df
 
@@ -76,7 +78,7 @@ def combine_df(dataframe_list):
     return combined_df
 
 
-def hot_encode_columns(df, name):
+def hot_encode_and_write_all_columns(df, name):
     '''
     :param df: dataframe which columns should be hot encoded
     :param name: name of the data that should be transformed, should be either "train" or "test"
@@ -95,8 +97,8 @@ def hot_encode_columns(df, name):
 
     # -- run to get one csv with production companies as one hot encod - but more than 2500 columns
     prod_comp = df['production_companies']
-    #transf_prod_comp = transform_dictionary(prod_comp)
-    #io.write_df(transf_prod_comp, 'prod_companies' + "_" + name)
+    transf_prod_comp = transform_dictionary(prod_comp)
+    io.write_df(transf_prod_comp, 'prod_companies' + "_" + name)
 
     # -- run to get one csv with production countries as one hot encod (58 columns)
     prod_countries = df['production_countries']
@@ -110,3 +112,39 @@ def hot_encode_columns(df, name):
 
     # num_genre_df = combine_df([trans_genre_df, num_data])
     # io.write_df(num_genre_df, 'num_genre' + "_" + name)
+
+
+def dim_reduction_components(df, n_components, visualize=False):
+    '''
+    :param df: dataframe that which dimensionality should be reduced
+    :param visualize: if true plots of the explained variance of the principal components are plotted
+    :return: reduced matrix, depending on the chosen number of principal components
+    '''
+
+    pca = PCA(n_components=n_components)
+    reduced_matrix = pca.fit_transform(df)
+
+    if visualize == True:
+        ev.pca_var_exp_visualizer(pca)
+
+    # Todo: add functionality to extract pca model in order to transform test data as well
+
+    return reduced_matrix
+
+
+def dim_reduction_var_exp(df, n_components, visualize=False):
+    '''
+    :param df: dataframe that which dimensionality should be reduced
+    :param visualize: if true plots of the explained variance of the principal components are plotted
+    :return: reduced matrix, depending on the chosen number of principal components
+    '''
+
+    pca = PCA(n_components=n_components, svd_solver='full')
+    reduced_matrix = pca.fit_transform(df)
+
+    if visualize == True:
+        ev.pca_var_exp_visualizer(pca)
+
+    #Todo: add functionality to extract pca model in order to transform test data as well
+
+    return reduced_matrix
