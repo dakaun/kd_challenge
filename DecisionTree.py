@@ -26,4 +26,4 @@ def decision_tree(data):
     decisiontree.fit(X_train, y_train)
     y_pre = decisiontree.predict(X_test)
     dt_score = decisiontree.score(X_test, y_test)
-    print(f'Score is : {dt_score}')
+    print(f'Decision tree Score is : {dt_score}')

@@ -1,7 +1,13 @@
 import IOHandler as io
 import PreprocessingHandler as ph
 import pandas as pd
+
 import DecisionTree as dt
+import MLPClassifier as mlp
+import SVMClassifier as svm
+import NearestCentroidClassifier as nc
+import GNBClassifier as gnb
+import NearestNeigborClassification as knn
 
 df = io.read_data('train')
 df_reduced = df[df.imdbId != 233699].reset_index(drop=True)
@@ -21,6 +27,13 @@ train_dataset = ph.combine_df([ph.extract_numerical(df_reduced), genres_reductio
 #print(train_dataset)
 
 dt.decision_tree(train_dataset)
+mlp.mlp_classifier(train_dataset)
+svm.svm_classifier(train_dataset)
+nc.nc_classifier(train_dataset)
+gnb.gnb_classifier(train_dataset)
+knn.knn_classifier(train_dataset)
+
+
 
 #prod_countries_reductions = io.read_data('prod_countries_train')
 #ph.dim_reduction_var_exp(prod_countries_reductions, 0.8)
