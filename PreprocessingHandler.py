@@ -7,6 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 import EvaluationHandler as ev
 from sklearn.feature_extraction.text import CountVectorizer as countvec
+import datetime
 
 # todo date transformieren + hinzufügen
 # todo pca
@@ -50,12 +51,11 @@ def standard(X):
 
 
 # transform genre dictionary into columnwise entries
-def transform_dictionary(df_column): # todo leere dictionaries
+def transform_dictionary(df_column):
     '''
     :param df: excepts column with dictionary entries like 'genres'
     :return: one hot encoding matrix with the name entries as column and rows stay the same
     '''
-    row_index = 0
     result_df = pd.DataFrame()
 
     for row_index, row in enumerate(df_column):
@@ -70,6 +70,22 @@ def transform_dictionary(df_column): # todo leere dictionaries
     # result_df.to_csv('./data/' + df_name + '.csv', index=False) - done seperately through IO Method
     return result_df
 
+
+def transf_date(column):
+    '''
+    transforms the date column
+    :param column: gets release date column
+    :return: columns in seconds as numerical
+    '''
+    result_df = pd.DataFrame()
+    for row_index, row in enumerate(column):
+        if row:
+            result_df.loc[row_index] = datetime.datetime.strptime(row, '%Y-%m-%d')
+        else:
+            result_df.loc[row_index] = 0
+    return result_df
+
+
 def bag_of_words(dataframe_column):
     '''
     :param dataframe_column: columns with text
@@ -78,7 +94,7 @@ def bag_of_words(dataframe_column):
     countv = countvec()
     #countv = countvec(stop_words='english', analyzer='word')
     x_text = countv.fit_transform(dataframe_column)
-    
+
     return x_text
 
 
