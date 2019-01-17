@@ -3,14 +3,14 @@ import ast
 import json
 import pandas as pd
 import IOHandler as io
-from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import StandardScaler
-import numpy as np
 from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
 import EvaluationHandler as ev
 from sklearn.feature_extraction.text import CountVectorizer as countvec
 
+# todo date transformieren + hinzufügen
+# todo pca
+# todo leere felder
 
 # extract numerical columns
 def extract_numerical(dataset):
@@ -50,9 +50,7 @@ def standard(X):
 
 
 # transform genre dictionary into columnwise entries
-# https://chrisalbon.com/machine_learning/vectors_matrices_and_arrays/converting_a_dictionary_into_a_matrix/
-# https://stackoverflow.com/questions/11277432/how-to-remove-a-key-from-a-python-dictionary
-def transform_dictionary(df_column):
+def transform_dictionary(df_column): # todo leere dictionaries
     '''
     :param df: excepts column with dictionary entries like 'genres'
     :return: one hot encoding matrix with the name entries as column and rows stay the same
@@ -60,12 +58,15 @@ def transform_dictionary(df_column):
     row_index = 0
     result_df = pd.DataFrame()
 
-    for row in df_column:
+    for row_index, row in enumerate(df_column):
         row_json = json.loads(row)
-        for element in row_json:
-            result_df.loc[row_index, element['name']] = 1
-        row_index += 1
+        if row_json:
+            for element in row_json:
+                result_df.loc[row_index, element['name']] = 1
+        else:
+            result_df.loc[row_index] = 0
     result_df.fillna(value=0, inplace=True)
+    print(result_df.shape)
     # result_df.to_csv('./data/' + df_name + '.csv', index=False) - done seperately through IO Method
     return result_df
 
@@ -121,6 +122,10 @@ def hot_encode_and_write_all_columns(df, name):
     lang = df['spoken_languages']
     transf_lang = transform_dictionary(lang)
     io.write_df(transf_lang, 'spoken_languages' + "_" + name)
+
+    keywords = df['keywords']
+    transf_keywords = transform_dictionary(keywords)
+    io.write_df(transf_keywords, 'keywords_' + name)
 
     # num_genre_df = combine_df([trans_genre_df, num_data])
     # io.write_df(num_genre_df, 'num_genre' + "_" + name)
