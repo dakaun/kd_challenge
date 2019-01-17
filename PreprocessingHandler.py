@@ -9,6 +9,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import EvaluationHandler as ev
+from sklearn.feature_extraction.text import CountVectorizer as countvec
 
 
 # extract numerical columns
@@ -67,6 +68,17 @@ def transform_dictionary(df_column):
     result_df.fillna(value=0, inplace=True)
     # result_df.to_csv('./data/' + df_name + '.csv', index=False) - done seperately through IO Method
     return result_df
+
+def bag_of_words(dataframe_column):
+    '''
+    :param dataframe_column: columns with text
+    :return: one hot encoded matrix
+    '''
+    countv = countvec()
+    #countv = countvec(stop_words='english', analyzer='word')
+    x_text = countv.fit_transform(dataframe_column)
+    
+    return x_text
 
 
 def combine_df(dataframe_list):
