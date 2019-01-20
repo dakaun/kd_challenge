@@ -66,24 +66,22 @@ def transform_dictionary(df_column):
         else:
             result_df.loc[row_index] = 0
     result_df.fillna(value=0, inplace=True)
-    print(result_df.shape)
     # result_df.to_csv('./data/' + df_name + '.csv', index=False) - done seperately through IO Method
     return result_df
 
-
+# todo fix bug
 def transf_date(column):
     '''
     transforms the date column
     :param column: gets release date column
     :return: columns in seconds as numerical
     '''
-    result_df = pd.DataFrame()
+    #result_df = pd.DataFrame()
     for row_index, row in enumerate(column):
-        if row:
-            result_df.loc[row_index] = datetime.datetime.strptime(row, '%Y-%m-%d')
-        else:
-            result_df.loc[row_index] = 0
-    return result_df
+        date = datetime.datetime.strptime(row, '%Y-%m-%d')
+        column.loc[row_index] = datetime.datetime(date)
+    io.write_df(column, 'release_date.csv')
+    return column
 
 
 def bag_of_words(dataframe_column):
@@ -92,10 +90,10 @@ def bag_of_words(dataframe_column):
     :return: one hot encoded matrix
     '''
     countv = countvec()
-    #countv = countvec(stop_words='english', analyzer='word')
+    countv = countvec(stop_words='english', analyzer='word')
     x_text = countv.fit_transform(dataframe_column)
-
-    return x_text
+    x = pd.DataFrame(x_text.toarray())
+    return x
 
 
 def combine_df(dataframe_list):
@@ -181,3 +179,8 @@ def dim_reduction_var_exp(df, n_components, visualize=False):
     #Todo: add functionality to extract pca model in order to transform test data as well
 
     return reduced_matrix
+
+if __name__ == '__main__':
+    df = pd.read_csv('./data/train.csv')
+    column = df['release_date']
+    result = transf_date(column)
