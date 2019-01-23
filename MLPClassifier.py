@@ -3,10 +3,10 @@ from sklearn.model_selection import train_test_split
 import PreprocessingHandler as ph
 
 
-def mlp_classifier(data):
-    X, y = ph.get_X_y(data)
+def mlp_classifier(X_train,X_test,y_train,y_test):
+    #X, y = ph.get_X_y(data)
     # X_stand = ph.standard(X)
-    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    #X_train, X_test, y_train, y_test = train_test_split(X, y)
 
     clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,1), random_state=1).fit(X_train, y_train)
 
