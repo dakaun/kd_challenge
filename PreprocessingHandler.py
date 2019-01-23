@@ -15,7 +15,7 @@ import datetime
 
 # extract numerical columns
 def extract_numerical(dataset):
-    subset = dataset[['label', 'budget', 'popularity', 'revenue', 'runtime']]
+    subset = dataset[['budget', 'popularity', 'revenue', 'runtime']]
     return subset
 
 
@@ -152,7 +152,7 @@ def dim_reduction_components(df, n_components, visualize=False):
     :return: reduced matrix, depending on the chosen number of principal components
     '''
 
-    pca = PCA(n_components=n_components)
+    pca = PCA(n_components=n_components, svd_solver='randomized')
     reduced_matrix = pca.fit_transform(df)
 
     if visualize == True:
