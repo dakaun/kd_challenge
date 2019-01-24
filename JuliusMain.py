@@ -34,6 +34,8 @@ gnb.gnb_classifier(train_dataset)
 knn.knn_classifier(train_dataset)
 
 
+# Todo IMDB rating crawler (https://datascience.stackexchange.com/questions/5534/how-to-scrape-imdb-webpage)
+
 
 #prod_countries_reductions = io.read_data('prod_countries_train')
 #ph.dim_reduction_var_exp(prod_countries_reductions, 0.8)

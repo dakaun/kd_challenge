@@ -45,8 +45,17 @@ def get_X_y(dataset):
 
 # standardize data
 def standard(X):
-    scaler = StandardScaler()
-    X_trans = scaler.fit_transform(X)
+    scaler = StandardScaler().fit(X)
+    X_trans = scaler.transform(X)
+    return X_trans
+
+
+def define_standard_scaler(X):
+    scaler = StandardScaler().fit(X)
+    return scaler
+
+def fit_standard_scaler(X, scaler):
+    X_trans = scaler.transform(X)
     return X_trans
 
 

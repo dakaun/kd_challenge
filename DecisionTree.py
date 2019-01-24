@@ -27,7 +27,7 @@ def decision_tree(X_train,X_test,y_train,y_test, X_total, y, x_val=False):
     decisiontree = DecisionTreeClassifier()
 
     if x_val:
-        v_score = cross_val_score(decisiontree, X_total, np.ravel(y),scoring='accuracy', cv=5)
+        v_score = cross_val_score(decisiontree, X_total, np.ravel(y),scoring='accuracy', cv=10)
         return print(f'Decision tree Score is : {str(round(100*v_score.mean(), 2))}')
     else:
         decisiontree.fit(X_train, y_train)
